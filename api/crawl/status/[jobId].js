@@ -13,24 +13,30 @@ export default function handler(req, res) {
 
   const { jobId } = req.query;
 
-  global.jobs = global.jobs || {};
-  const job = global.jobs[jobId];
-
-  if (!job) {
+  if (!jobId || typeof jobId !== "string" || !jobId.startsWith("job_")) {
     return res.status(404).json({ error: "Job not found" });
   }
 
-  job.progress = job.progress + 25;
+  const startedAt = Number(jobId.replace("job_", ""));
 
-  if (job.progress >= 100) {
-    job.progress = 100;
-    job.status = "completed";
+  if (!Number.isFinite(startedAt)) {
+    return res.status(404).json({ error: "Job not found" });
   }
 
+  const elapsedMs = Date.now() - startedAt;
+
+  let progress = 0;
+  if (elapsedMs >= 0) progress = 25;
+  if (elapsedMs >= 1200) progress = 50;
+  if (elapsedMs >= 2400) progress = 75;
+  if (elapsedMs >= 3600) progress = 100;
+
+  const status = progress >= 100 ? "completed" : "running";
+
   return res.status(200).json({
-    jobId: jobId,
-    status: job.status,
-    progress: job.progress,
-    totalFound: job.progress >= 100 ? 5 : 1,
+    jobId,
+    status,
+    progress,
+    totalFound: progress >= 100 ? 2 : 1,
   });
 }
