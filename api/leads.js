@@ -25,7 +25,7 @@ export default function handler(req, res) {
         instagram: "@test",
         website: "test.com",
         modelDetected: false,
-        status: "Yeni",
+        status: "Yeni"
       },
       {
         id: 2,
@@ -39,8 +39,8 @@ export default function handler(req, res) {
         instagram: "@demo",
         website: "demo.com",
         modelDetected: false,
-        status: "Yeni",
-      },
-    ],
+        status: "Yeni"
+      }
+    ]
   });
 }
