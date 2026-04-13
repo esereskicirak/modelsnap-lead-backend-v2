@@ -20,7 +20,7 @@ export default function handler(req, res) {
     return res.status(404).json({ error: "Job not found" });
   }
 
-  job.progress += 25;
+  job.progress = job.progress + 25;
 
   if (job.progress >= 100) {
     job.progress = 100;
@@ -28,7 +28,7 @@ export default function handler(req, res) {
   }
 
   return res.status(200).json({
-    jobId,
+    jobId: jobId,
     status: job.status,
     progress: job.progress,
     totalFound: job.progress >= 100 ? 5 : 1,
